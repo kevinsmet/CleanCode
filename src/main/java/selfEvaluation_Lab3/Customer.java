@@ -64,7 +64,7 @@ public class Customer {
         //... to be continued ...
         return null;
         }
-    }
+    
 
     public HashMap<String,Integer> createAmountMap(){
         HashMap<String,Integer> amountmap = new HashMap<>();
