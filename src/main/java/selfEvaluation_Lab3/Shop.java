@@ -7,20 +7,26 @@ import java.util.*;
 
 public class Shop {
 
-    private static  customerCard;
+
     private Customer customer;
     private LoyaltyCard loyaltyCard;
 
     private TreeMap<Customer,LoyaltyCard> customerCard = new TreeMap<>();
 
 
-    public static void addCustomerToMap(Customer customer, LoyaltyCard loyaltyCard){
+    public void addCustomerToMap(Customer customer, LoyaltyCard loyaltyCard){
         customerCard.put(customer,loyaltyCard);
     }
 
-    public Customer findCustomer (Customer customer, LoyaltyCard loyaltyCard){
+    public Customer findCustomer (int barCode){
+        Customer defaultcustomer = null;
+        for (Customer customer: customerCard.keySet()) {
+           if (customerCard.get(customer).equals(barCode)) {
+               return customer;
+           }
 
-    }
+                }
+        return defaultcustomer;}
 
 
 }
