@@ -47,6 +47,7 @@ public class Customer {
 
     public void doGroceries(List<String> itemList) {
         LocalDate dateOfGroceries = LocalDate.now();
+
         if (groceries.containsKey(dateOfGroceries)){
             for (String item : itemList) {
                 groceries.get(dateOfGroceries).add(item);
