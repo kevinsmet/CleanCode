@@ -1,34 +1,81 @@
 package Test_SelfEvaluation_Lab3;
 
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import selfEvaluation_Lab3.Customer;
+import selfEvaluation_Lab3.CustomerRepository;
 import selfEvaluation_Lab3.LoyaltyCard;
-import selfEvaluation_Lab3.Shop;
 
-import java.util.TreeMap;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Test_Shop {
-    private Customer customer;
-    private LoyaltyCard loyaltyCard;
-    private TreeMap<Customer,LoyaltyCard> testCustomer = new TreeMap<>();
+    private Customer testCus1 = new Customer("Smet", "Kevin", "Westdijk 14", new LoyaltyCard(1234,5));
+    private Customer testCus2 = new Customer("Lodewyckx", "Elise", "Gerhoevenstraat 14a", new LoyaltyCard(5678, 3));
+    private Customer testCus3 = new Customer("Liekens", "Stijn", "ergens", new LoyaltyCard(91011, 10));
+
+    private CustomerRepository customerRepo = new CustomerRepository();
+
+    private List<String> testGroceries = new ArrayList<>();
+
+    @Before
+    public void setUp(){
+        customerRepo.addCustomer(testCus1);
+        customerRepo.addCustomer(testCus2);
+        customerRepo.addCustomer(testCus3);
+
+        testGroceries.add("chocolat");
+        testGroceries.add("apple");
+        testGroceries.add("pineapple");
+    }
 
     @Test
-    public void testAddCustomerToMap() throws Exception {
+    public void testAddCustomerToMap()  {
+       CustomerRepository customerRepoForThisTest = new CustomerRepository();
+       List<Customer> testListCustomers = new ArrayList<>();
 
-        String lastName = "Smet";
-        String firstName = "Kevin";
-        String Street_HouseNumber = "Westdijk 14";
-        int barcode = 1234;
+       customerRepoForThisTest.addCustomer(testCus1);
+       testListCustomers.add(testCus1);
 
-        customer = customer.getLastName(lastName)+customer.getFirstName(firstName)+customer.getStreet_HouseNumber(Street_HouseNumber);
-        loyaltyCard = loyaltyCard.getBarcode(barcode);
-        testCustomer.put(customer,loyaltyCard);
+       Assertions.assertThat(customerRepoForThisTest.getCustomers()).isEqualTo(testListCustomers);
+    }
 
-        Shop.addCustomerToMap(customer,loyaltyCard);
+    @Test
+    public void testFindCustomerByBarcode(){
+        Assertions.assertThat(customerRepo.findCustomer(1234)).isEqualTo(testCus1);
+    }
 
-        Assertions.assertThat()
+    @Test
+    public void testIfGroceriesCanBeRetrievedByDay(){
+        LocalDate date = LocalDate.now();
+
+        testCus1.doGroceries(testGroceries);
+
+        Assertions.assertThat(testCus1.getGroceries().get(date)).isEqualTo(testGroceries);
+    }
+
+    @Test
+    public void testIfGroceriesCanBeAddedMultipleTimesPerDay(){
+        LocalDate date = LocalDate.now();
+        List<String> testGroceries2 = new ArrayList<>();
+        List<String> fullDayGroceries = new ArrayList<>();
+
+        testGroceries2.add("banana");
+        testGroceries2.add("candy");
+
+        fullDayGroceries.add("chocolat");
+        fullDayGroceries.add("apple");
+        fullDayGroceries.add("pineapple");
+        fullDayGroceries.add("banana");
+        fullDayGroceries.add("candy");
+
+        testCus1.doGroceries(testGroceries);
+        testCus1.doGroceries(testGroceries2);
+
+        Assertions.assertThat(testCus1.getGroceries().get(date)).isEqualTo(fullDayGroceries);
     }
 }
