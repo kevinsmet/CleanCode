@@ -21,6 +21,8 @@ public class Test_Shop {
     private CustomerRepository customerRepo = new CustomerRepository();
 
     private List<String> testGroceries = new ArrayList<>();
+    private List<String> testGroceries1 = new ArrayList<>();
+    private List<String> testGroceries2 = new ArrayList<>();
 
     @Before
     public void setUp(){
@@ -31,6 +33,14 @@ public class Test_Shop {
         testGroceries.add("chocolat");
         testGroceries.add("apple");
         testGroceries.add("pineapple");
+
+        testGroceries1.add("chocolat");
+        testGroceries1.add("applepie");
+        testGroceries1.add("pineapplesyrup");
+
+        testGroceries2.add("chocolat");
+        testGroceries2.add("pizza");
+        testGroceries2.add("spread");
     }
 
     @Test
@@ -77,5 +87,16 @@ public class Test_Shop {
         testCus1.doGroceries(testGroceries2);
 
         Assertions.assertThat(testCus1.getGroceries().get(date)).isEqualTo(fullDayGroceries);
+    }
+
+    @Test
+    public void testGetMostBoughtItem(){
+        testCus1.doGroceries(testGroceries);
+        testCus1.doGroceries(testGroceries1);
+        testCus1.doGroceries(testGroceries2);
+
+        Assertions.assertThat(testCus1.getMostBoughtItem().equals("chocolat"));
+
+
     }
 }

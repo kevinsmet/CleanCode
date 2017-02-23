@@ -1,9 +1,11 @@
 package selfEvaluation_Lab3;
 
+import java.awt.font.ShapeGraphicAttribute;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Customer {
     private String lastName;
@@ -55,4 +57,30 @@ public class Customer {
         } else {
         groceries.put(dateOfGroceries, itemList);
     }
-}}
+}
+
+    public String getMostBoughtItem() {
+        Map<String,Integer> amountmap = createAmountMap();
+        //... to be continued ...
+        return null;
+        }
+    }
+
+    public HashMap<String,Integer> createAmountMap(){
+        HashMap<String,Integer> amountmap = new HashMap<>();
+        for (List<String> list: groceries.values()) {
+            for (String string:list) {
+                if(amountmap.keySet().contains(string)){
+                    Integer amount = amountmap.get(string);
+                    amount++;
+                    amountmap.put(string,amount);
+                }
+                else{
+                    amountmap.put(string,1);
+                }
+            }
+
+        }
+        return amountmap;
+    }
+}
